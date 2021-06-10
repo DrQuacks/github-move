@@ -57,7 +57,54 @@
 
       function checkGuess() {
           let userGuess = Number(guessField.value);
+          if (guessCount === 1) {
+            guesses.textContent ='Previous guesses: ';
+          }
+          guesses.textContent += userGuess + ' ';
+
+          if (userGuess === randomNumber) {
+            lastResult.textContent = 'Congratulations! You got it right!';
+            lastResult.style.backgroundColor = 'green';
+            lowOrHi.textContent = '';
+            setGameOver("win");
+          } else if (guessCount === 10) {
+            lastResult.textContent = '!!!Game OVER!!!';
+            setGameOver('lose');
+          } else {
+            lastResult.textContent = 'Wrong!';
+            lastResult.style.backgroundColor = 'red';
+            if (userGuess < randomNumber) {
+              lowOrHi.textContent = 'Psssht, your too low!';
+            } else if(userGuess > randomNumber) {
+              lowOrHi.textContent = 'Yall are way too fuckin high';
+            }
+          }
           
+          guessCount++;
+          guessField.value = '';
+          guessField.focus();
+      }
+
+      guessSubmit.addEventListener('click', checkGuess);
+
+      function setGameOver(s) {
+        guessField.disabled = true;
+        guessSubmit.disabled = true;
+        resetButton = document.createElement('button');
+        if (s === 'win') { 
+          resetButton.textContent = 'Try that luck again?';
+        } else {
+          resetButton.textContent = "I'm sure it'll go better next time...";
+        }
+
+        document.body.append(resetButton);
+        resetButton.addEventListener('click',resetGame);
+      }
+
+      function resetGame() {
+        guessCount = 1;
+
+
       }
 
 
